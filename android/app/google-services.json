@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "804008888688",
+    "firebase_url": "https://church-management-cbf7d-default-rtdb.firebaseio.com",
+    "project_id": "church-management-cbf7d",
+    "storage_bucket": "church-management-cbf7d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804008888688:android:9c786fb80d6c03a17a67b5",
+        "android_client_info": {
+          "package_name": "com.example.cms_app_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804008888688-a90itatd30rmbecnhra72c072qdausdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAuQUgGKVZWAm3gskviJXIhLrIiYNoey8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804008888688-a90itatd30rmbecnhra72c072qdausdc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804008888688:android:bd090dfdc59dae237a67b5",
+        "android_client_info": {
+          "package_name": "com.example.flutter_church_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804008888688-a90itatd30rmbecnhra72c072qdausdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAuQUgGKVZWAm3gskviJXIhLrIiYNoey8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804008888688-a90itatd30rmbecnhra72c072qdausdc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804008888688:android:5a0ad455060354f77a67b5",
+        "android_client_info": {
+          "package_name": "info.socorp.ikia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804008888688-a90itatd30rmbecnhra72c072qdausdc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAuQUgGKVZWAm3gskviJXIhLrIiYNoey8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804008888688-a90itatd30rmbecnhra72c072qdausdc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
