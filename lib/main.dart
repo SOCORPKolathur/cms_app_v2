@@ -18,54 +18,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 }
 
-/*class LocalNotificationService {
-  // Instance of Flutternotification plugin
-  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
-  FlutterLocalNotificationsPlugin();
-
-  static void initialize() {
-    // Initialization  setting for android
-    const InitializationSettings initializationSettingsAndroid =
-    InitializationSettings(
-        android: AndroidInitializationSettings("@drawable/ic_launcher"));
-    _notificationsPlugin.initialize(
-      initializationSettingsAndroid,
-      // to handle event when we receive notification
-      onDidReceiveNotificationResponse: (details) {
-        if (details.input != null) {}
-      },
-    );
-  }
-
-  static Future<void> display(RemoteMessage message) async {
-    // To display the notification in device
-    try {
-      print(message.notification!.android!.sound);
-      final id = DateTime
-          .now()
-          .millisecondsSinceEpoch ~/ 1000;
-      NotificationDetails notificationDetails = NotificationDetails(
-        android: AndroidNotificationDetails(
-            message.notification!.android!.sound ?? "Channel Id",
-            message.notification!.android!.sound ?? "Main Channel",
-
-            color: Colors.green,
-            importance: Importance.max,
-
-
-            // different sound for
-            // different notification
-            playSound: true,
-            priority: Priority.high),
-      );
-      await _notificationsPlugin.show(id, message.notification?.title,
-          message.notification?.body, notificationDetails,
-          payload: message.data['route']);
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-}*/
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -161,6 +113,7 @@ void main() async {
       supportedLocales: ['ta','te','ml','kn','en_US','bn','hi','es','pt','fr','nl','de','it','sv']);
   runApp(LocalizedApp(delegate, MyApp()));
 }
+
 class NotificationController {
 
   /// Use this method to detect when a new notification or a schedule is created
@@ -190,6 +143,8 @@ class NotificationController {
 
   }
 }
+
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
