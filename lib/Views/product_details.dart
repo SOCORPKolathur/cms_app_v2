@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cms_app_v2/Widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:cms_app_v2/Views/my_cart.dart';
 import 'package:cms_app_v2/Views/product_page.dart';
@@ -6,7 +8,9 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constant.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key});
+  String docid;
+  double price;
+   ProductDetails({required this.docid,required this.price});
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -37,149 +41,150 @@ class _ProductDetailsState extends State<ProductDetails> {
               fontSize: 24, color: textColor, fontWeight: FontWeight.w800),
         ),
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: NeverScrollableScrollPhysics(),
-          child: Column(
-            children: [
-              Stack(
+      body: FutureBuilder(
+        future: FirebaseFirestore.instance.collection("Products").doc(widget.docid).get(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            Map<String, dynamic>? val = snapshot.data!.data();
+            return SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: Column(
                 children: [
-                  Padding(
-                    padding:
-                        EdgeInsets.only(top: height / 18.85, left: width / 18),
-                    child: CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Color(0xffA6D6FF),
-                    ),
-                  ),
                   Padding(
                     padding: EdgeInsets.only(
                       top: height / 37.7,
                     ),
                     child: Container(
-                      width: width / 1.8,
-                      child: Image.asset("assets/candle.png"),
+                      width: width / 1.1,
+                      height: height / 3.3,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12)
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.network(val!["imgUrl"], fit: BoxFit
+                            .cover,),
+                      ),
                     ),
                   ),
-                ],
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: width / 18,
-                  ),
-                  Container(
-                    width: width / 1.8,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: height / 75.4),
-                      child: Text(
-                        "Blue Candles For Church",
+                  SizedBox(height: height / 48,),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: width / 18,
+                      ),
+                      Container(
+                        width: width / 1.8,
+                        child: Padding(
+                          padding: EdgeInsets.only(top: height / 75.4),
+                          child: Text(
+                            val["title"],
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 24,
+                                color: TextColor,
+                                fontWeight: FontWeight.w800),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width / 12,
+                      ),
+                      Text(
+                        "₹${val["price"]}/-",
                         style: GoogleFonts.sofiaSans(
                             fontSize: 24,
-                            color: TextColor,
+                            color: primaryColor,
                             fontWeight: FontWeight.w800),
+                      )
+                    ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: height / 75.4),
+                    child: Container(
+                      width: width / 1.12,
+                      child: Text(val["description"],
+                        style: GoogleFonts.sofiaSans(
+                          fontSize: 16,
+                          color: TextColor,
+                        ),
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                    EdgeInsets.only(right: width / 1.71, top: height / 75.4),
+                    child: Text(
+                      "Quantity : ",
+                      style: GoogleFonts.sofiaSans(
+                          fontSize: 24,
+                          color: TextColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: height / 40.8),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: width / 18,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              if (counter > 1) {
+                                counter--; // Decrease the counter if it's greater than 1
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: width / 12,
+                            height: height / 25.13,
+                            decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Icon(
+                              Icons.minimize_outlined,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: width / 12,
+                        ),
+                        Text('$counter'),
+                        SizedBox(
+                          width: width / 12,
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              counter++;
+                            });
+                          },
+                          child: Container(
+                            width: width / 12,
+                            height: height / 25.13,
+                            decoration: BoxDecoration(
+                                color: primaryColor,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: Icon(
+                              Icons.add,
+                              color: textColor,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
-                    width: width / 12,
+                    height: height / 10.77,
                   ),
-                  Text(
-                    "₹299 /-",
-                    style: GoogleFonts.sofiaSans(
-                        fontSize: 24,
-                        color: primaryColor,
-                        fontWeight: FontWeight.w800),
-                  )
                 ],
               ),
-              Padding(
-                padding: EdgeInsets.only(top: height / 75.4),
-                child: Container(
-                  width: width / 1.12,
-                  child: Text(
-                    "Candles fit in most standard votive candle holders and lanterns Made in the India with"
-                    " quality wax from core to overdip so candles maintain "
-                    "color in the India with quality wax from core to overdip so candles maintain color ",
-                    style: GoogleFonts.sofiaSans(
-                      fontSize: 16,
-                      color: TextColor,
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    EdgeInsets.only(right: width / 1.71, top: height / 75.4),
-                child: Text(
-                  "Quantity : ",
-                  style: GoogleFonts.sofiaSans(
-                      fontSize: 24,
-                      color: TextColor,
-                      fontWeight: FontWeight.w800),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: height / 150.8),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: width / 18,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          if (counter > 1) {
-                            counter--; // Decrease the counter if it's greater than 1
-                          }
-                        });
-                      },
-                      child: Container(
-                        width: width / 12,
-                        height: height / 25.13,
-                        decoration: BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Icon(
-                          Icons.minimize_outlined,
-                          color: textColor,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: width / 12,
-                    ),
-                    Text('$counter'),
-                    SizedBox(
-                      width: width / 12,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          counter++;
-                        });
-                      },
-                      child: Container(
-                        width: width / 12,
-                        height: height / 25.13,
-                        decoration: BoxDecoration(
-                            color: primaryColor,
-                            borderRadius: BorderRadius.circular(5)),
-                        child: Icon(
-                          Icons.add,
-                          color: textColor,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: height / 10.77,
-              ),
-            ],
-          ),
-        ),
+            );
+          }
+          return LoadingState();
+        }
       ),
       bottomNavigationBar: Container(
         child: Stack(
@@ -195,7 +200,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             Padding(
               padding: EdgeInsets.only(top: height / 37.7, left: width / 18),
               child: Text(
-                "₹299 /-",
+                "₹${widget.price * counter}/-",
                 style: GoogleFonts.sofiaSans(
                     fontSize: 24,
                     color: primaryColor,

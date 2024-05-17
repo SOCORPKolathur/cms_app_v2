@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cms_app_v2/Widgets/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:cms_app_v2/Views/product_details.dart';
 import 'package:cms_app_v2/constant.dart';
@@ -69,7 +71,7 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
             ),
-            Padding(
+         /*   Padding(
               padding:  EdgeInsets.only(left: width/18, top: height/37.7),
               child: Container(
                 width: width/1.12,
@@ -92,83 +94,111 @@ class _ProductPageState extends State<ProductPage> {
                           color: Color(0xff262626).withOpacity(.3))),
                 ),
               ),
-            ),
-            Padding(
+            ),*/
+
+            StreamBuilder(
+                stream: FirebaseFirestore.instance.collection("Products").snapshots(),
+                builder: (context,snap){
+                  if(snap.hasData){
+              return GridView.builder(
+
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
+                  childAspectRatio:6/8.2
+                ),
+              itemCount: snap.data!.size,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+
+              itemBuilder: (context,index){
+                return InkWell(
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProductDetails(docid:  snap.data!.docs[index].id,price: double.parse(snap.data!.docs[index]["price"].toString()),)));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Material(
+                      elevation: 3,
+                      borderRadius: BorderRadius.circular(10),
+                      child: Container(
+                        width: width/2.4,
+                        height:height/3.4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(height: height/48,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 160,
+                                  height: 160,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(12)
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(snap.data!.docs[index]["imgUrl"],fit: BoxFit.cover,)),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding:  EdgeInsets.only(left: width/18,top: height/33 ),
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        snap.data!.docs[index]["title"],
+                                        style: GoogleFonts.sofiaSans(
+                                            fontSize: 14,
+                                            color: TextColor,
+                                            fontWeight: FontWeight.w800),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(),
+                                        child: Text(
+                                          "₹${snap.data!.docs[index]["price"]}/-",
+                                          style: GoogleFonts.sofiaSans(
+                                              fontSize: 14,
+                                              color: primaryColor,
+                                              fontWeight: FontWeight.w800),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding:EdgeInsets.only(left: width/8),
+                                    child: CircleAvatar(
+                                        radius: 20,
+                                        child: IconButton(
+                                            onPressed: () {},
+                                            icon: Icon(
+                                                Icons.shopping_cart_outlined))),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+
+              );}
+                 return LoadingState();
+
+            }),
+           /* Padding(
               padding: EdgeInsets.only(top: height/37.7),
               child: Row(
                 children: [
                   SizedBox(
                     width: width/18,
                   ),
-                  Material(
-                    elevation: 3,
-                    borderRadius: BorderRadius.circular(10),
-                    child: Container(
-                      width: width/2.4,
-                      height:height/3.4,
-                      child: Column(
-                        children: [
-                          InkWell(
-                            onTap: () {
 
-                            },
-                            child: Stack(
-                              children: [
-                                Padding(
-                                  padding:
-                                      EdgeInsets.only(top: height/25.13, left: width/72),
-                                  child: Container(
-                                    width: width/2,
-                                    child: Image.asset("assets/circle1.png"),
-                                  ),
-                                ),
-                                Container(
-                                  child: Image.asset("assets/flower.png"),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding:  EdgeInsets.only(left: width/18, ),
-                            child: Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      "Flower",
-                                      style: GoogleFonts.sofiaSans(
-                                          fontSize: 14,
-                                          color: TextColor,
-                                          fontWeight: FontWeight.w800),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: width/78),
-                                      child: Text(
-                                        "₹299 /-",
-                                        style: GoogleFonts.sofiaSans(
-                                            fontSize: 14,
-                                            color: primaryColor,
-                                            fontWeight: FontWeight.w800),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Padding(
-                                  padding:EdgeInsets.only(left: width/18),
-                                  child: CircleAvatar(
-                                      radius: 20,
-                                      child: IconButton(
-                                          onPressed: () {},
-                                          icon: Icon(
-                                              Icons.shopping_cart_outlined))),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
                   SizedBox(
                     width: width/18,
                   ),
@@ -394,7 +424,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                 ],
               ),
-            ),
+            ),*/
             SizedBox(height: height/37.7,)
           ],
         ),
