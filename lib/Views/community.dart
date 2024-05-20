@@ -33,7 +33,7 @@ class _CommunityPageState extends State<CommunityPage> {
           ),
         ),
       ),
-    /*  body: SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -435,7 +435,7 @@ class _CommunityPageState extends State<CommunityPage> {
             )
           ],
         ),
-      ),*/
+      ),
     );
   }
 }
