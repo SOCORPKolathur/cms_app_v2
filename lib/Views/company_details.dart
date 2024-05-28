@@ -50,7 +50,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Padding(
+     /*       Padding(
               padding:  EdgeInsets.only(left: width/18, top: height/37.7),
               child: Container(
                 width: width/0.88,
@@ -73,7 +73,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                           color: Color(0xff262626).withOpacity(.3))),
                 ),
               ),
-            ),
+            ),*/
             Padding(
               padding:  EdgeInsets.only(top: height/37.7, left: width/18),
               child: Text(

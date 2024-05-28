@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cms_app_v2/Widgets/kText.dart';
 import 'package:cms_app_v2/Widgets/nodata.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -42,6 +43,7 @@ class _ContactAdminState extends State<ContactAdmin> {
   @override
   void initState() {
     getdoccount();
+    gettoken();
     // TODO: implement initState
     super.initState();
   }
@@ -67,185 +69,220 @@ class _ContactAdminState extends State<ContactAdmin> {
               fontSize: 20, color: textColor, fontWeight: FontWeight.w800),
         ),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(child: Lottie.asset('assets/conatctadmin.json')),
-          SizedBox(height: height / 87.7,),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                InkWell(
-                  onTap:(){
-                    _showAlertDialogOne();
-                    },
-                  child: Material(
-                    elevation: 4,
-                  borderRadius: BorderRadius.circular(15),
-                    child: Container(
-                      width: 250,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(15)
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(child: Lottie.asset('assets/conatctadmin.json')),
+            SizedBox(height: height / 87.7,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  InkWell(
+                    onTap:(){
+                      _showAlertDialogOne();
+                      },
+                    child: Material(
+                      elevation: 4,
+                    borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        width: 250,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: primaryColor,
+                          borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: Center(child: Text("Raise a Ticket", style: GoogleFonts.sofiaSans(
+                        fontSize: 22, color: textColor, fontWeight: FontWeight.w800),
+                        ),),
                       ),
-                      child: Center(child: Text("Raise a Ticket", style: GoogleFonts.sofiaSans(
-                      fontSize: 22, color: textColor, fontWeight: FontWeight.w800),
-                      ),),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: height / 57.7, left: width / 18),
-            child: Text(
-              "Your Previous tickets",
-              style: GoogleFonts.sofiaSans(
-                color: TextColor,
-                fontSize: 24,
-                fontWeight: FontWeight.w800,
+                ],
               ),
             ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: width / 18,
-            ),
-            child: Container(
-              width: width / 0.9,
+            Padding(
+              padding: EdgeInsets.only(top: height / 57.7, left: width / 18),
               child: Text(
-                "Connect with admin and your issues will be solved as top priority",
+                "Your Previous tickets",
                 style: GoogleFonts.sofiaSans(
-                  color: TextColor.withOpacity(.5),
-                  fontSize: 16,
+                  color: TextColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
                 ),
               ),
             ),
-          ),
-          Divider(
-            color: Color(0xFF262626).withOpacity(
-                .2),
-            endIndent: 15,
-            indent: 15,
-          ),
-          StreamBuilder(
-            stream: FirebaseFirestore.instance.collection("Tickets").orderBy("timestamp",descending: true).snapshots(),
-            builder: (context,snapshot){
-              if(today>0) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        if (snapshot.hasData) {
-                          var data = snapshot.data!.docs[index];
-
-                          return data["phone"] == widget.userphone ?
-                          Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start,
-                              children: [
-                                SizedBox(
-                                  height: height / 37.7,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: width / 18),
-                                  child: Text(
-                                    data["reason"],
-                                    style: GoogleFonts.sofiaSans(
-                                        fontSize: 20,
-                                        color: primaryColor,
-                                        fontWeight: FontWeight.w800),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: width / 18),
-                                  child: ReadMoreText(
-                                    data["message"],
-                                    trimMode: _trimMode,
-                                    trimLines: _trimLines,
-                                    trimLength: _trimLength,
-                                    //isCollapsed: isCollapsed,
-                                    style: GoogleFonts.sofiaSans(
-                                        color: TextColor),
-                                    colorClickableText: primaryColor,
-                                    trimCollapsedText: 'Read more',
-                                    trimExpandedText: ' Less',
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(
-
-                                      top: height / 75.4,
-                                      right: width / 30,
-                                      left: width / 25),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: 100,
-                                        height: 25,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                                12),
-                                            color: Colors.yellow.withOpacity(
-                                                0.40)
-                                        ),
-                                        child: Center(
-                                          child: Text("Pending",
+            Padding(
+              padding: EdgeInsets.only(
+                left: width / 18,
+              ),
+              child: Container(
+                width: width / 0.9,
+                child: Text(
+                  "Connect with admin and your issues will be solved as top priority",
+                  style: GoogleFonts.sofiaSans(
+                    color: TextColor.withOpacity(.5),
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            Divider(
+              color: Color(0xFF262626).withOpacity(
+                  .2),
+              endIndent: 15,
+              indent: 15,
+            ),
+            StreamBuilder(
+              stream: FirebaseFirestore.instance.collection("Tickets").orderBy("timestamp",descending: true).snapshots(),
+              builder: (context,snapshot){
+                if(today>0) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          if (snapshot.hasData) {
+                            var data = snapshot.data!.docs[index];
+        
+                            return data["phone"] == widget.userphone ?
+                            VisibilityDetector(
+                              key: Key('my-widget-key2 $index'),
+                              onVisibilityChanged: (VisibilityInfo visibilityInfo){
+                                var visiblePercentage = visibilityInfo.visibleFraction;
+                                if(visiblePercentage>0.50){
+                                  FirebaseFirestore.instance.collection("Tickets").doc(data.id).update(
+                                      {
+                                        "view2":true,
+                                      }
+                                  );
+                                }
+                              },
+                              child: Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+                                    SizedBox(
+                                      height: height / 37.7,
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: width / 18),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width:width/1.2,
+                                            child: Text(
+                                              data["reason"],
+                                              style: GoogleFonts.sofiaSans(
+                                                  fontSize: 20,
+                                                  color: primaryColor,
+                                                  fontWeight: FontWeight.w800),
+                                            ),
+                                          ),
+                                          data["view2"]==false?   Container(width: 15,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                            color: Colors.red,
+                                            borderRadius: BorderRadius.circular(50)
+                                          ),) : SizedBox()
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+                                          left: width / 18),
+                                      child: ReadMoreText(
+                                        data["message"],
+                                        trimMode: _trimMode,
+                                        trimLines: _trimLines,
+                                        trimLength: _trimLength,
+                                        //isCollapsed: isCollapsed,
+                                        style: GoogleFonts.sofiaSans(
+                                            color: TextColor),
+                                        colorClickableText: primaryColor,
+                                        trimCollapsedText: 'Read more',
+                                        trimExpandedText: ' Less',
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(
+        
+                                          top: height / 75.4,
+                                          right: width / 30,
+                                          left: width / 25),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: 100,
+                                            height: 25,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(
+                                                    12),
+                                                color:
+                                                data["status"]=="Pending" ?Colors.yellow.withOpacity(0.40) :
+                                                data["status"]=="Resolved" ?Colors.green.withOpacity(0.40) :
+                                                Colors.red.withOpacity(0.40),
+                                            ),
+                                            child: Center(
+                                              child: Text(data["status"],
+                                                style: GoogleFonts.sofiaSans(
+                                                    fontSize: 16,
+                                                    color:  Colors.black.withOpacity(0.70),
+                                                    fontWeight: FontWeight.w800),
+                                              ),
+                                            ),),
+        
+                                          Text(
+                                            "Raised at ${data["time"]} - ${data["date"]}",
                                             style: GoogleFonts.sofiaSans(
-                                                fontSize: 16,
-                                                color: Colors.black.withOpacity(
-                                                    0.70),
+                                                fontSize: 14,
+                                                color: Color(0xFF262626)
+                                                    .withOpacity(.7),
                                                 fontWeight: FontWeight.w800),
                                           ),
-                                        ),),
-
-                                      Text(
-                                        "Raised at ${data["time"]} - ${data["date"]}",
-                                        style: GoogleFonts.sofiaSans(
-                                            fontSize: 14,
-                                            color: Color(0xFF262626)
-                                                .withOpacity(.7),
-                                            fontWeight: FontWeight.w800),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    Divider(
+                                      color: Color(0xFF262626).withOpacity(
+                                          .2),
+                                      endIndent: 15,
+                                      indent: 15,
+                                    ),
+        
+        
+                                  ],
                                 ),
-                                Divider(
-                                  color: Color(0xFF262626).withOpacity(
-                                      .2),
-                                  endIndent: 15,
-                                  indent: 15,
-                                ),
-
-
-                              ],
-                            ),
-                          ) : SizedBox();
+                              ),
+                            ) : SizedBox();
+                          }
+                          return LoadingState();
                         }
-                        return LoadingState();
-                      }
-                  );
+                    );
+                  }
                 }
-              }
-              return Container(
-                  height:200,
-                child: Nodata(),
-              );
-            },
-          )
-        ],
+                return Container(
+                    height:200,
+                  child: Nodata(),
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
+  }
+  String fcmToken="";
+  gettoken() async {
+    String? fcmTokenk = await FirebaseMessaging.instance.getToken();
+    fcmToken=fcmTokenk!;
   }
   TextEditingController reason = new TextEditingController();
   TextEditingController message = new TextEditingController();
@@ -345,6 +382,10 @@ class _ContactAdminState extends State<ContactAdmin> {
                   children: [
                     InkWell(
                       onTap: () {
+                        setState(() {
+                          reason.clear();
+                          message.clear();
+                        });
                         Navigator.of(context).pop();
                       },
                       child: Container(
@@ -379,7 +420,15 @@ class _ContactAdminState extends State<ContactAdmin> {
                           "phone": widget.userphone,
                           "userid":widget.userid,
                           "view":false,
+                          "view2":true,
+                          "status":"Pending",
+                          "fcmToken":fcmToken
                         });
+                        setState(() {
+                          reason.clear();
+                          message.clear();
+                        });
+                        getdoccount();
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Your ticked is received will update you shortly.")));
                         Navigator.of(context).pop();
                       },

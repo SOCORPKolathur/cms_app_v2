@@ -988,7 +988,44 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   ),
                                 ),
+                                StreamBuilder(
+                                    stream: FirebaseFirestore.instance.collection("Tickets").where("phone",isEqualTo: userphone).snapshots(),
+                                    builder: (context, snapshot) {
+                                      if(snapshot.hasData) {
+                                        int count = snapshot.data!.docs.where((doc) {
+                                          return !doc['view2'];
+                                        }).length;
+                                        if(count!=0) {
+                                          return Padding(
+                                            padding: EdgeInsets.only(
+                                                left: width / 9,
+                                                top: height / 45.4),
+                                            child: Container(
+                                              width: 22,
+                                              height: 22,
+                                              decoration: BoxDecoration(
+                                                  color: Colors.red,
+                                                  borderRadius: BorderRadius
+                                                      .circular(50)
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  count
+                                                      .toString().padLeft(2, "0"),
+                                                  style: GoogleFonts.sofiaSans(
+                                                    color: textColor,
+                                                    fontSize: 11,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),),
+                                              ),
 
+                                            ),
+                                          );
+                                        }
+                                      }
+                                      return Container();
+                                    }
+                                ),
                               ],
                             ),
                           ),

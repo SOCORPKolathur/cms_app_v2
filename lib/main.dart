@@ -190,6 +190,7 @@ class _MyAppState extends State<MyApp> {
       'My Channel',
       // title
 
+
       description: 'Important notifications from my server.',
       playSound: true,
       enableVibration: true,

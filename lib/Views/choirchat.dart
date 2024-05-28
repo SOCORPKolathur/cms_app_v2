@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,10 @@ import 'package:visibility_detector/visibility_detector.dart';
 
 import '../constant.dart';
 
-class ChatScreen extends StatefulWidget {
- 
-  ChatScreen(
-      {required this.userDocId, required this.uid, required this.collection, required this.title, required this.isClan,required this.clanId, required this.isCommittee,required this.committeeId});
+
+
+class ChoirChat extends StatefulWidget {
+  ChoirChat({required this.userDocId, required this.uid, required this.collection, required this.title, required this.isClan,required this.clanId, required this.isCommittee,required this.committeeId});
   final String userDocId;
   String title;
   final String uid;
@@ -25,14 +26,12 @@ class ChatScreen extends StatefulWidget {
   final bool isClan;
   final String committeeId;
   final bool isCommittee;
-  
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChoirChat> createState() => _ChoirChatState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-
+class _ChoirChatState extends State<ChoirChat> {
   ScrollController _scrollController = new ScrollController();
 
   TextEditingController chatMessage = new TextEditingController();
@@ -65,15 +64,15 @@ class _ChatScreenState extends State<ChatScreen> {
     CollectionReference reference = FirebaseFirestore.instance.collection(widget.collection);
     reference.snapshots().listen((querySnapshot) {
       print("Hello++++++++++++++++++++++++++++++++++++++++++++");
-       setState(() {
-         count=count+1;
-       });
-       if(count>1){
-         print("Ok");
-         //FlutterRingtonePlayer().playNotification(looping: false,);
-       }
-
+      setState(() {
+        count=count+1;
       });
+      if(count>1){
+        print("Ok");
+        //FlutterRingtonePlayer().playNotification(looping: false,);
+      }
+
+    });
 
   }
 
@@ -101,7 +100,7 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-              stream: /*widget.isCommittee
+        stream: /*widget.isCommittee
                   ? FirebaseFirestore.instance
                   .collection('CommitteeChat').doc(widget.committeeId).collection('Chat')
                   .orderBy("time")
@@ -112,126 +111,126 @@ class _ChatScreenState extends State<ChatScreen> {
                   .orderBy("time")
                   .snapshots()
                   :*/ FirebaseFirestore.instance
-                  .collection(widget.collection)
-                  .orderBy("time")
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if(snapshot.hasData){
-                  return Container(
-                    height: MediaQuery.of(context).size.height/1.2,
-                    width: MediaQuery.of(context).size.width,
-                    color: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: height / 37.95, horizontal: width / 19.6),
-                    child: SingleChildScrollView(
+            .collection(widget.collection)
+            .orderBy("time")
+            .snapshots(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData){
+            return Container(
+              height: MediaQuery.of(context).size.height/1.2,
+              width: MediaQuery.of(context).size.width,
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(vertical: height / 37.95, horizontal: width / 19.6),
+              child: SingleChildScrollView(
+                reverse: true,
+                child: Column(
+                  children: <Widget>[
+                    SingleChildScrollView(
                       reverse: true,
-                      child: Column(
-                        children: <Widget>[
-                          SingleChildScrollView(
-                            reverse: true,
-                            child: ListView.builder(
-                                itemCount: snapshot.data!.docs.length,
-                                scrollDirection: Axis.vertical,
-                                controller: _scrollController,
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return Column(
-                                    crossAxisAlignment: snapshot.data!.docs[index]["sender"]=="${username} ${userlastname!}" ?CrossAxisAlignment.end: CrossAxisAlignment.start,
-                                    children: [
-                                      VisibilityDetector(
-                                          key: Key('my-widget-key2 $index'),
-                                          onVisibilityChanged: (VisibilityInfo visibilityInfo){
-                                            var visiblePercentage = visibilityInfo.visibleFraction;
+                      child: ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          scrollDirection: Axis.vertical,
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return Column(
+                              crossAxisAlignment: snapshot.data!.docs[index]["sender"]=="${username} ${userlastname!}" ?CrossAxisAlignment.end: CrossAxisAlignment.start,
+                              children: [
+                                VisibilityDetector(
+                                    key: Key('my-widget-key2 $index'),
+                                    onVisibilityChanged: (VisibilityInfo visibilityInfo){
+                                      var visiblePercentage = visibilityInfo.visibleFraction;
 
-                                            if(visiblePercentage>0.50){
+                                      if(visiblePercentage>0.50){
 
-                                              FirebaseFirestore.instance.collection(widget.collection).doc(snapshot.data!.docs[index].id).update(
-                                                  {
-                                                    "views":FieldValue.arrayUnion([userid]),
-                                                  }
-                                              );
+                                        FirebaseFirestore.instance.collection(widget.collection).doc(snapshot.data!.docs[index].id).update(
+                                            {
+                                              "views":FieldValue.arrayUnion([userid]),
                                             }
-                                          },
-                                          child: messageTile(Size(width, height), snapshot.data!.docs[index].data(), context, snapshot.data!.docs[index].id,)),
-                                      snapshot.data!.docs[index]["submitdate"] == "${DateTime.now().year}-${ DateTime.now().month}-${ DateTime.now().day}" ?
-                                      Text(
-                                        'Today  ${snapshot
-                                            .data!
-                                            .docs[index]["submittime"]}',
-                                        style: TextStyle(
-                                            fontSize: width /
-                                                40,
-                                            color: Colors
-                                                .grey,
-                                            fontWeight: FontWeight
-                                                .w700),)
-                                          :
-                                      snapshot
-                                          .data!
-                                          .docs[index]["submitdate"] ==
-                                          "${DateTime
-                                              .now()
-                                              .year}-${ DateTime
-                                              .now()
-                                              .month}-${ DateTime
-                                              .now()
-                                              .day -
-                                              1}"
-                                          ?
-                                      Text(
-                                        'Yesterday  ${snapshot
-                                            .data!
-                                            .docs[index]["submittime"]}',
-                                        style: TextStyle(
-                                            fontSize: width /
-                                                40,
-                                            color: Colors
-                                                .grey,
-                                            fontWeight: FontWeight
-                                                .w700),)
-                                          :
-                                      Text(
-                                        "${snapshot
-                                            .data!
-                                            .docs[index]["submitdate"]}  ${snapshot
-                                            .data!
-                                            .docs[index]["submittime"]}",
-                                        style: TextStyle(
-                                            fontSize: width /
-                                                40,
-                                            color: Colors
-                                                .grey,
-                                            fontWeight: FontWeight
-                                                .w700),),
-                                      Text(
-                                        '${snapshot
-                                            .data!
-                                            .docs[index]["sender"]}',
-                                        style: TextStyle(
-                                            fontSize: width /
-                                                40,
-                                            color: Colors
-                                                .grey,
-                                            fontWeight: FontWeight
-                                                .w700),),
-                                      SizedBox(
-                                        height: height /
-                                            80,)
-                                    ],
-                                  );
-                                }),
-                          ),
-                          SizedBox(
-                            height: height / 10.18,
-                          )
-                        ],
-                      ),
+                                        );
+                                      }
+                                    },
+                                    child: messageTile(Size(width, height), snapshot.data!.docs[index].data(), context, snapshot.data!.docs[index].id,)),
+                                snapshot.data!.docs[index]["submitdate"] == "${DateTime.now().year}-${ DateTime.now().month}-${ DateTime.now().day}" ?
+                                Text(
+                                  'Today  ${snapshot
+                                      .data!
+                                      .docs[index]["submittime"]}',
+                                  style: TextStyle(
+                                      fontSize: width /
+                                          40,
+                                      color: Colors
+                                          .grey,
+                                      fontWeight: FontWeight
+                                          .w700),)
+                                    :
+                                snapshot
+                                    .data!
+                                    .docs[index]["submitdate"] ==
+                                    "${DateTime
+                                        .now()
+                                        .year}-${ DateTime
+                                        .now()
+                                        .month}-${ DateTime
+                                        .now()
+                                        .day -
+                                        1}"
+                                    ?
+                                Text(
+                                  'Yesterday  ${snapshot
+                                      .data!
+                                      .docs[index]["submittime"]}',
+                                  style: TextStyle(
+                                      fontSize: width /
+                                          40,
+                                      color: Colors
+                                          .grey,
+                                      fontWeight: FontWeight
+                                          .w700),)
+                                    :
+                                Text(
+                                  "${snapshot
+                                      .data!
+                                      .docs[index]["submitdate"]}  ${snapshot
+                                      .data!
+                                      .docs[index]["submittime"]}",
+                                  style: TextStyle(
+                                      fontSize: width /
+                                          40,
+                                      color: Colors
+                                          .grey,
+                                      fontWeight: FontWeight
+                                          .w700),),
+                                Text(
+                                  '${snapshot
+                                      .data!
+                                      .docs[index]["sender"]}',
+                                  style: TextStyle(
+                                      fontSize: width /
+                                          40,
+                                      color: Colors
+                                          .grey,
+                                      fontWeight: FontWeight
+                                          .w700),),
+                                SizedBox(
+                                  height: height /
+                                      80,)
+                              ],
+                            );
+                          }),
                     ),
-                  );
-                }return Container();
-              },
-            ),
-     
+                    SizedBox(
+                      height: height / 10.18,
+                    )
+                  ],
+                ),
+              ),
+            );
+          }return Container();
+        },
+      ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: SizedBox(
         height: height / 15,

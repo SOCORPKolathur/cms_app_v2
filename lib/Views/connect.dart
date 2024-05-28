@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cms_app_v2/Views/choirchat.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cms_app_v2/Views/chatscreen.dart';
@@ -24,9 +25,17 @@ class _ConnectPageState extends State<ConnectPage> {
 
   }
 
+
+  String churchLogo = "";
+  getchurchlogo() async {
+    var church = await FirebaseFirestore.instance.collection('ChurchDetails').get();
+    churchLogo = church.docs.first.get("logo");
+  }
+
   @override
   void initState() {
     getuser();
+    getchurchlogo();
     // TODO: implement initState
     super.initState();
   }
@@ -82,7 +91,14 @@ class _ConnectPageState extends State<ConnectPage> {
                     padding: EdgeInsets.only(left: width / 36),
                     child: Container(
                       height: height / 15.08,
-                      child: Image.asset("assets/holy_church.png"),
+                      width: width/7.84,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(50)
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                          child: Image.network(churchLogo,fit: BoxFit.cover,)),
                     ),
                   ),
                   title: Text(
@@ -232,43 +248,121 @@ class _ConnectPageState extends State<ConnectPage> {
               color: Color(0xff262626).withOpacity(.1),
             ),
           ),
-          ListTile(
-            onTap: (){
-             /* Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context)=>ChatScreen("Choir Group"))
-              );*/
-            },
-            leading: Padding(
-              padding: EdgeInsets.only(left: width/36),
-              child: Container(
-                height: height/15.08,
-                child: Image.asset("assets/Mask group (14).png"),
+          StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("ChorusChat")
+                .orderBy("time",descending: true)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+      int count = snapshot.data!.docs.where((doc) {
+        List<dynamic> array = doc['views'];
+        return !array.contains(userid);
+      }).length;
+      return ListTile(
+        onTap: (){
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) =>
+                  ChoirChat(
+                      title: "Choir Group",
+                      userDocId: userid,
+                      uid: FirebaseAuth.instance.currentUser!.uid,
+                      collection: "ChorusChat",
+                      isClan: false,
+                      clanId: "",
+                      committeeId: "",
+                      isCommittee: false)));
+        },
+        leading: Padding(
+          padding: EdgeInsets.only(left: width/36),
+          child: Container(
+            height: height/15.08,
+            child: Image.asset("assets/Mask group (14).png"),
+          ),
+        ),
+        title: Text(
+          "Choir Group",
+          style: GoogleFonts.sofiaSans(
+            color: TextColor,
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        subtitle: Text(
+          snapshot.data!.docs[0]["message"],
+          style: GoogleFonts.sofiaSans(
+            color: TextColor.withOpacity(.4),
+            fontSize: 12,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            count>0?  Container(
+              width: 22,
+              height: 22,
+              decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius
+                      .circular(50)
               ),
-            ),
-            title: Text(
-              "Choir Group",
+              child: Center(
+                child: Text(
+                  count
+                      .toString(),
+                  style: GoogleFonts.sofiaSans(
+                    color: textColor,
+                    fontSize: 11,
+                    fontWeight: FontWeight.bold,
+                  ),),
+              ),
+
+            ) : Container(width: 10,height: 10,),
+            Text(
+              snapshot.data!.docs[0]["submittime"],
               style: GoogleFonts.sofiaSans(
                 color: TextColor,
-                fontSize: 16,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            subtitle: Text(
-              "Today special...",
-              style: GoogleFonts.sofiaSans(
-                color: TextColor.withOpacity(.4),
                 fontSize: 12,
                 fontWeight: FontWeight.w800,
               ),
             ),
-            trailing: Text(
-              "12:15 Am",
-              style: GoogleFonts.sofiaSans(
-                color: TextColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
+          ],
+        ),
+      );
+    }
+              return ListTile(
+                onTap: (){
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) =>
+                          ChoirChat(
+                              title: "Choir Group",
+                              userDocId: userid,
+                              uid: FirebaseAuth.instance.currentUser!.uid,
+                              collection: "ChorusChat",
+                              isClan: false,
+                              clanId: "",
+                              committeeId: "",
+                              isCommittee: false)));
+                },
+                leading: Padding(
+                  padding: EdgeInsets.only(left: width/36),
+                  child: Container(
+                    height: height/15.08,
+                    child: Image.asset("assets/Mask group (14).png"),
+                  ),
+                ),
+                title: Text(
+                  "Choir Group",
+                  style: GoogleFonts.sofiaSans(
+                    color: TextColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+
+              );
+            }
           ),
           SizedBox(
             width: width/1.02,
@@ -276,11 +370,13 @@ class _ConnectPageState extends State<ConnectPage> {
               color: Color(0xff262626).withOpacity(.1),
             ),
           ),
-          ListTile(
+        /*  ListTile(
             onTap: (){
-            /*  Navigator.of(context).push(
+            */
+          /*  Navigator.of(context).push(
                   MaterialPageRoute(builder: (context)=>ChatScreen("Blood requirements"))
               );*/
+          /*
             },
             leading: Padding(
               padding: EdgeInsets.only(left: width/36),
@@ -313,7 +409,7 @@ class _ConnectPageState extends State<ConnectPage> {
                 fontWeight: FontWeight.w800,
               ),
             ),
-          ),
+          ),*/
           SizedBox(
             width: width/1.02,
             child: Divider(
