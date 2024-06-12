@@ -145,11 +145,11 @@ class _EventsScreenState extends State<EventsScreen> {
                     StreamBuilder(
                       stream: FirebaseFirestore.instance.collection("Events").orderBy("timestamp",descending: true).snapshots(),
                       builder: (context,snapshot){
-
+                        if(snapshot.hasData) {
                         return ListView.builder(
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context,index) {
-                              if(snapshot.hasData) {
+
                                 var data = snapshot.data!.docs[index];
 
                                 return data["date"] == DateFormat('dd/MM/yyyy').format(DateTime.now())?
@@ -322,20 +322,22 @@ class _EventsScreenState extends State<EventsScreen> {
                                     ),
                                   ),
                                 ) : SizedBox();
-                              }
-                              return LoadingState();
+
                             }
                         );
+                        }
+                        return LoadingState();
                       },
                     ) : Nodata(),
                     upcomming>0?
                     StreamBuilder(
                       stream: FirebaseFirestore.instance.collection("Events").orderBy("timestamp",descending: true).snapshots(),
                       builder: (context,snapshot){
+                        if (snapshot.hasData) {
                         return ListView.builder(
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context,index) {
-                              if (snapshot.hasData) {
+
                                 var data = snapshot.data!.docs[index];
                                 return data["date"] != DateFormat('dd/MM/yyyy').format(DateTime.now()) ?
                                 VisibilityDetector(
@@ -511,10 +513,11 @@ class _EventsScreenState extends State<EventsScreen> {
                                     ),
                                   ),
                                 ): SizedBox();
-                              }
-                              return LoadingState();
+
                             }
                         );
+                        }
+                        return LoadingState();
                       },
                     )  : Nodata(),
                   ],

@@ -218,7 +218,7 @@ class _ConnectPageState extends State<ConnectPage> {
               ),
             ),
             title: Text(
-              "Chennai Zone",
+              "Zone Chats",
               style: GoogleFonts.sofiaSans(
                 color: TextColor,
                 fontSize: 16,
@@ -234,7 +234,7 @@ class _ConnectPageState extends State<ConnectPage> {
               ),
             ),
             trailing: Text(
-              "08:42 Am",
+              "08:42 Pm",
               style: GoogleFonts.sofiaSans(
                 color: TextColor,
                 fontSize: 12,
@@ -248,7 +248,7 @@ class _ConnectPageState extends State<ConnectPage> {
               color: Color(0xff262626).withOpacity(.1),
             ),
           ),
-          StreamBuilder(
+        /*  StreamBuilder(
             stream: FirebaseFirestore.instance
                 .collection("ChorusChat")
                 .orderBy("time",descending: true)
@@ -369,7 +369,7 @@ class _ConnectPageState extends State<ConnectPage> {
             child: Divider(
               color: Color(0xff262626).withOpacity(.1),
             ),
-          ),
+          ),*/
         /*  ListTile(
             onTap: (){
             */

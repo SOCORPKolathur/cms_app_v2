@@ -61,10 +61,11 @@ class _BlogsState extends State<Blogs> {
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("Blogs").orderBy("timestamp",descending: true).snapshots(),
         builder: (context,snapshot){
+          if (snapshot.hasData) {
           return ListView.builder(
               itemCount: snapshot.data!.docs.length,
               itemBuilder: (context,index) {
-                if (snapshot.hasData) {
+
                   var data = snapshot.data!.docs[index];
                   return
                     VisibilityDetector(
@@ -158,10 +159,11 @@ class _BlogsState extends State<Blogs> {
                       ),
                     ),
                   );
-                }
-                return LoadingState();
+
               }
           );
+              }
+              return LoadingState();
         },
       ),
     );

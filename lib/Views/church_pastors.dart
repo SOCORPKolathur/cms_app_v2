@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart' as UrlLauncher;
 
 
 import '../constant.dart';
@@ -131,30 +132,35 @@ class _ChurchPastorsState extends State<ChurchPastors> {
                                       SizedBox(
                                         width: width/4.5,
                                       ),
-                                      Container(
-                                        height: height/16.08,
-                                        width: width/2.4,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(15),
-                                          color: primaryColor,
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(
-                                              width: width/18,
-                                            ),
-                                            Icon(
-                                              Icons.phone,
-                                              color: textColor,
-                                            ),
-                                            Text(
-                                              "Contact Now",
-                                              style: GoogleFonts.sofiaSans(
-                                                  fontSize: 14,
-                                                  color: textColor,
-                                                  fontWeight: FontWeight.w800),
-                                            ),
-                                          ],
+                                      InkWell(
+                                        onTap: (){
+                                          UrlLauncher.launchUrl(Uri.parse("tel://${snapshot.data!.docs[index]["phone"]}"));
+                                        },
+                                        child: Container(
+                                          height: height/16.08,
+                                          width: width/2.4,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(15),
+                                            color: primaryColor,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: width/18,
+                                              ),
+                                              Icon(
+                                                Icons.phone,
+                                                color: textColor,
+                                              ),
+                                              Text(
+                                                "Contact Now",
+                                                style: GoogleFonts.sofiaSans(
+                                                    fontSize: 14,
+                                                    color: textColor,
+                                                    fontWeight: FontWeight.w800),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],

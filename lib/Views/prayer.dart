@@ -168,6 +168,7 @@ class _MyPrayerState extends State<MyPrayer> {
                               description.text = "";
                               title.text = "";
                             });
+                            getdoccount();
                             Navigator.pop(context);
                           }).catchError((e) async {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Failed to create Prayer request")));
@@ -232,14 +233,14 @@ class _MyPrayerState extends State<MyPrayer> {
   Future<int> gettodaycount() async {
     CollectionReference col1 = FirebaseFirestore.instance.collection('Prayers');
     final snapshots = await col1.get();
-    int count = snapshots.docs.where((doc) => doc["phone"] == widget.phone && doc["date"] ==  DateFormat('dd/MM/yyyy').format(DateTime.now())).length;
+    int count = snapshots.docs.where((doc) => doc["phone"] == widget.phone && doc["date"] ==  DateFormat('dd-MM-yyyy').format(DateTime.now())).length;
     return count;
   }
 
   Future<int> getupcommingcount() async {
     CollectionReference col1 = FirebaseFirestore.instance.collection('Prayers');
     final snapshots = await col1.get();
-    int count = snapshots.docs.where((doc) => doc["phone"] == widget.phone && doc["date"] !=  DateFormat('dd/MM/yyyy').format(DateTime.now())).length;
+    int count = snapshots.docs.where((doc) => doc["phone"] == widget.phone && doc["date"] !=  DateFormat('dd-MM-yyyy').format(DateTime.now())).length;
     return count;
   }
 
@@ -383,7 +384,7 @@ class _MyPrayerState extends State<MyPrayer> {
                               }
                               if(snapshot.hasData) {
                                 var data = snapshot.data!.docs[index];
-                                return data["phone"] == widget.phone && data['date'] == DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()?Container(
+                                return data["phone"] == widget.phone && data['date'] == DateFormat('dd-MM-yyyy').format(DateTime.now()).toString()?Container(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
@@ -500,7 +501,7 @@ class _MyPrayerState extends State<MyPrayer> {
                               }
                               if(snapshot.hasData) {
                                 var data = snapshot.data!.docs[index];
-                                return data["phone"] == widget.phone && data['date'] != DateFormat('dd/MM/yyyy').format(DateTime.now()).toString()?
+                                return data["phone"] == widget.phone && data['date'] != DateFormat('dd-MM-yyyy').format(DateTime.now()).toString()?
                                 Container(
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,

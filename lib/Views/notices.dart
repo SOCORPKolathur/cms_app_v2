@@ -26,15 +26,20 @@ class _NoticesState extends State<Notices> {
 
   int today = 0;
   int upcomming =0;
+  bool isloading =false;
 
 
 
   getdoccount() async {
+    setState(() {
+      isloading = true;
+    });
     var docu = await FirebaseFirestore.instance.collection("Notices").where("date",isEqualTo: DateFormat('dd/MM/yyyy').format(DateTime.now())).get();
     var docu2 = await FirebaseFirestore.instance.collection("Notices").where("date",isNotEqualTo: DateFormat('dd/MM/yyyy').format(DateTime.now())).get();
     setState(() {
       today = docu.docs.length;
       upcomming = docu2.docs.length;
+      isloading = false;
     });
 
   }
@@ -143,184 +148,191 @@ class _NoticesState extends State<Notices> {
               Expanded(
                 child: TabBarView(
                   children: <Widget>[
-                    today>0?
+                   isloading?LoadingState(): today>0?
                    StreamBuilder(
                      stream: FirebaseFirestore.instance.collection("Notices").orderBy("timestamp",descending: true).snapshots(),
                      builder: (context,snapshot){
+                       if(snapshot.hasData) {
+                         return ListView.builder(
 
-                       return ListView.builder(
-                         itemCount: snapshot.data!.docs.length,
-                         itemBuilder: (context,index) {
-                           if(snapshot.hasData) {
-                             var data = snapshot.data!.docs[index];
+        itemBuilder: (context, index) {
+          var data = snapshot.data!.docs[index];
 
-                             return data["date"] == DateFormat('dd/MM/yyyy').format(DateTime.now()).toString() ?
-                             VisibilityDetector(
-                               key: Key('my-widget-key2 $index'),
-                               onVisibilityChanged: (VisibilityInfo visibilityInfo){
-                                 var visiblePercentage = visibilityInfo.visibleFraction;
+          return data["date"] ==
+              DateFormat('dd/MM/yyyy').format(DateTime.now()).toString() ?
+          VisibilityDetector(
+            key: Key('my-widget-key2 $index'),
+            onVisibilityChanged: (VisibilityInfo visibilityInfo) {
+              var visiblePercentage = visibilityInfo.visibleFraction;
 
-                                 if(visiblePercentage>0.50){
+              if (visiblePercentage > 0.50) {
+                FirebaseFirestore.instance.collection("Notices")
+                    .doc(data.id)
+                    .update(
+                    {
+                      "views": FieldValue.arrayUnion([widget.userphone]),
+                    }
+                );
+              }
+            },
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment
+                    .start,
+                children: [
+                  SizedBox(
+                    height: height / 37.7,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: width / 18),
+                    child: Text(
+                      data["title"],
+                      style: GoogleFonts.sofiaSans(
+                          fontSize: 20,
+                          color: primaryColor,
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: width / 18),
+                    child: ReadMoreText(
+                      data["description"],
+                      trimMode: _trimMode,
+                      trimLines: _trimLines,
+                      trimLength: _trimLength,
+                      //isCollapsed: isCollapsed,
+                      style: GoogleFonts.sofiaSans(
+                          color: TextColor),
+                      colorClickableText: primaryColor,
+                      trimCollapsedText: 'Read more',
+                      trimExpandedText: ' Less',
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: width / 2.6,
+                        top: height / 75.4),
+                    child: Text(
+                      "Posted at ${data["time"]} - ${data["date"]}",
+                      style: GoogleFonts.sofiaSans(
+                          fontSize: 14,
+                          color: Color(0xFF262626)
+                              .withOpacity(.7),
+                          fontWeight: FontWeight.w800),
+                    ),
+                  ),
+                  Divider(
+                    color: Color(0xFF262626).withOpacity(
+                        .2),
+                    endIndent: 15,
+                    indent: 15,
+                  ),
 
-                                   FirebaseFirestore.instance.collection("Notices").doc(data.id).update(
-                                       {
-                                         "views":FieldValue.arrayUnion([widget.userphone]),
-                                       }
-                                   );
-                                 }
-                               },
-                               child:  Container(
-                                 child: Column(
-                                   crossAxisAlignment: CrossAxisAlignment
-                                       .start,
-                                   children: [
-                                     SizedBox(
-                                       height: height / 37.7,
-                                     ),
-                                     Padding(
-                                       padding: EdgeInsets.only(
-                                           left: width / 18),
-                                       child: Text(
-                                         data["title"],
-                                         style: GoogleFonts.sofiaSans(
-                                             fontSize: 20,
-                                             color: primaryColor,
-                                             fontWeight: FontWeight.w800),
-                                       ),
-                                     ),
-                                     Padding(
-                                       padding: EdgeInsets.only(
-                                           left: width / 18),
-                                       child: ReadMoreText(
-                                         data["description"],
-                                         trimMode: _trimMode,
-                                         trimLines: _trimLines,
-                                         trimLength: _trimLength,
-                                         //isCollapsed: isCollapsed,
-                                         style: GoogleFonts.sofiaSans(
-                                             color: TextColor),
-                                         colorClickableText: primaryColor,
-                                         trimCollapsedText: 'Read more',
-                                         trimExpandedText: ' Less',
-                                       ),
-                                     ),
-                                     Padding(
-                                       padding: EdgeInsets.only(
-                                           left: width / 2.6,
-                                           top: height / 75.4),
-                                       child: Text(
-                                         "Posted at ${data["time"]} - ${data["date"]}",
-                                         style: GoogleFonts.sofiaSans(
-                                             fontSize: 14,
-                                             color: Color(0xFF262626)
-                                                 .withOpacity(.7),
-                                             fontWeight: FontWeight.w800),
-                                       ),
-                                     ),
-                                     Divider(
-                                       color: Color(0xFF262626).withOpacity(
-                                           .2),
-                                       endIndent: 15,
-                                       indent: 15,
-                                     ),
+
+                ],
+              ),
+            ),
+          ) : SizedBox();
+        },
 
 
-                                   ],
-                                 ),
-                               ),
-                             ) : SizedBox();
-                           }
-                           return LoadingState();
-                         }
-                       );
+        itemCount: snapshot.data!.docs.length,
+
+      );
+                       }
+                       return LoadingState();
                      },
                    ) : Nodata(),
-                    upcomming>0?
+                    isloading?LoadingState(): upcomming>0?
                     StreamBuilder(
                       stream: FirebaseFirestore.instance.collection("Notices").orderBy("timestamp",descending: true).snapshots(),
-                      builder: (context,snapshot){
+                      builder: (context,snapshot){if(snapshot.hasData) {
                         return ListView.builder(
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context,index) {
-                              if (snapshot.hasData) {
-                                var data = snapshot.data!.docs[index];
-                                return data["date"] != DateFormat('dd/MM/yyyy').format(DateTime.now()) ?
-                                VisibilityDetector(
-                                  key: Key('my-widget-key2 $index'),
-                                  onVisibilityChanged: (VisibilityInfo visibilityInfo){
-                                    var visiblePercentage = visibilityInfo.visibleFraction;
-                                    if(visiblePercentage>0.50)
-                                      print(data["title"]);
-                                      FirebaseFirestore.instance.collection("Notices").doc(data.id).update(
-                                          {
-                                            "views":FieldValue.arrayUnion([widget.userphone]),
-                                          }
-                                      );
-                                  },
-                                  child: Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
-                                      children: [
-                                        SizedBox(
-                                          height: height / 37.7,
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: width / 18),
-                                          child: Text(
-                                            data["title"],
-                                            style: GoogleFonts.sofiaSans(
-                                                fontSize: 20,
-                                                color: primaryColor,
-                                                fontWeight: FontWeight.w800),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: width / 18),
-                                          child: ReadMoreText(
-                                            data["description"],
-                                            trimMode: _trimMode,
-                                            trimLines: _trimLines,
-                                            trimLength: _trimLength,
-                                            //isCollapsed: isCollapsed,
-                                            style: GoogleFonts.sofiaSans(
-                                                color: TextColor),
-                                            colorClickableText: primaryColor,
-                                            trimCollapsedText: 'Read more',
-                                            trimExpandedText: ' Less',
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              left: width / 2.6,
-                                              top: height / 75.4),
-                                          child: Text(
-                                            "Posted at ${data["time"]} - ${data["date"]}",
-                                            style: GoogleFonts.sofiaSans(
-                                                fontSize: 14,
-                                                color: Color(0xFF262626)
-                                                    .withOpacity(.7),
-                                                fontWeight: FontWeight.w800),
-                                          ),
-                                        ),
-                                        Divider(
-                                          color: Color(0xFF262626).withOpacity(
-                                              .2),
-                                          endIndent: 15,
-                                          indent: 15,
-                                        ),
+          itemCount: snapshot.data!.docs.length,
+          itemBuilder: (context, index) {
+            var data = snapshot.data!.docs[index];
+            return data["date"] !=
+                DateFormat('dd/MM/yyyy').format(DateTime.now()) ?
+            VisibilityDetector(
+              key: Key('my-widget-key2 $index'),
+              onVisibilityChanged: (VisibilityInfo visibilityInfo) {
+                var visiblePercentage = visibilityInfo.visibleFraction;
+                if (visiblePercentage > 0.50)
+                  print(data["title"]);
+                FirebaseFirestore.instance.collection("Notices")
+                    .doc(data.id)
+                    .update(
+                    {
+                      "views": FieldValue.arrayUnion([widget.userphone]),
+                    }
+                );
+              },
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start,
+                  children: [
+                    SizedBox(
+                      height: height / 37.7,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: width / 18),
+                      child: Text(
+                        data["title"],
+                        style: GoogleFonts.sofiaSans(
+                            fontSize: 20,
+                            color: primaryColor,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: width / 18),
+                      child: ReadMoreText(
+                        data["description"],
+                        trimMode: _trimMode,
+                        trimLines: _trimLines,
+                        trimLength: _trimLength,
+                        //isCollapsed: isCollapsed,
+                        style: GoogleFonts.sofiaSans(
+                            color: TextColor),
+                        colorClickableText: primaryColor,
+                        trimCollapsedText: 'Read more',
+                        trimExpandedText: ' Less',
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: width / 2.6,
+                          top: height / 75.4),
+                      child: Text(
+                        "Posted at ${data["time"]} - ${data["date"]}",
+                        style: GoogleFonts.sofiaSans(
+                            fontSize: 14,
+                            color: Color(0xFF262626)
+                                .withOpacity(.7),
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                    Divider(
+                      color: Color(0xFF262626).withOpacity(
+                          .2),
+                      endIndent: 15,
+                      indent: 15,
+                    ),
 
 
-                                      ],
-                                    ),
-                                  ),
-                                ) : SizedBox();
-                              }
-                              return LoadingState();
-                            }
-                        );
+                  ],
+                ),
+              ),
+            ) : SizedBox();
+          }
+      );
+                      }
+                        return LoadingState();
                       },
                     )  : Nodata(),
                   ],

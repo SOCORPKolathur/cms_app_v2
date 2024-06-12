@@ -275,20 +275,21 @@ class _TestimonialsState extends State<Testimonials> {
       body: StreamBuilder(
           stream: FirebaseFirestore.instance.collection("Testimonials").orderBy("timestamp",descending: true).snapshots(),
           builder: (context, snapshot) {
-            return ListView.builder(
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context,index) {
-                  if(snapshot.data!.docs.length==0){
-                    return Nodata();
-                  }
-                  if(snapshot.hasData) {
+            if(snapshot.data!.docs.length==0){
+              return Nodata();
+            }
+            if (snapshot.hasData) {
+              return ListView.builder(
+                  itemCount: snapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
                     var data = snapshot.data!.docs[index];
-                    return data["phone"] == widget.phone ?Container(
+                    return data["phone"] == widget.phone ? Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: width / 30, top: height /
+                            padding: EdgeInsets.only(
+                                left: width / 30, top: height /
                                 37.7),
                             child: Text(
                               data["title"],
@@ -300,7 +301,8 @@ class _TestimonialsState extends State<Testimonials> {
                           ),
 
                           Padding(
-                            padding: EdgeInsets.only(left: width / 24, top: height /
+                            padding: EdgeInsets.only(
+                                left: width / 24, top: height /
                                 37.7),
                             child: Container(
                               width: width / 1.09,
@@ -380,12 +382,13 @@ class _TestimonialsState extends State<Testimonials> {
                           ),
                         ],
                       ),
-                    ) :SizedBox();
+                    ) : SizedBox();
                   }
+              );
+            }
 
-                  return LoadingState();
-                }
-            );
+            return LoadingState();
+
           }
       ),
     );

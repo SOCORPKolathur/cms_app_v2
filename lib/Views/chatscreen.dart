@@ -101,7 +101,8 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
       ),
       body: StreamBuilder<QuerySnapshot>(
-              stream: /*widget.isCommittee
+              stream:
+              /*widget.isCommittee
                   ? FirebaseFirestore.instance
                   .collection('CommitteeChat').doc(widget.committeeId).collection('Chat')
                   .orderBy("time")
@@ -111,7 +112,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   .collection('ClansChat').doc(widget.clanId).collection('Chat')
                   .orderBy("time")
                   .snapshots()
-                  :*/ FirebaseFirestore.instance
+                  :*/
+              FirebaseFirestore.instance
                   .collection(widget.collection)
                   .orderBy("time")
                   .snapshots(),

@@ -87,16 +87,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Full Name",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Full Name",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 5.53,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -131,16 +132,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Profession",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Profession",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 6,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -175,16 +177,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Marital Status",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Marital Status",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 10.28,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -219,16 +222,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Locality",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Locality",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 4.5,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -240,7 +244,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                           width: width / 9,
                         ),
                         Text(
-                          data["city"],
+                          data["city"]=="Select City"?"-":data["city"],
                           style: GoogleFonts.sofiaSans(
                               fontSize: 16,
                               color: TextColor.withOpacity(.7),
@@ -265,16 +269,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 24,
                         ),
-                        Text(
-                          "Address",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Address",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 4.5,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -330,16 +335,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Family ID",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Family ID",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 5.53,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -374,16 +380,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Family Name",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Family Name",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 9,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -418,16 +425,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Leader Name",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Leader Name",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 9,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -447,7 +455,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                       ],
                     ),
                   ),
-                  Padding(
+                /*  Padding(
                     padding: EdgeInsets.only(top: height / 75.4),
                     child: Row(
                       children: [
@@ -461,16 +469,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Contact Number",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Contact Number",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 24,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -490,7 +499,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         )
                       ],
                     ),
-                  ),
+                  ),*/
                   /*  Padding(
                   padding: EdgeInsets.only(top: height / 75.4),
                   child: Row(
@@ -541,7 +550,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(
-                          width: width / 18,
+                          width: width / 13,
                         ),
                         Icon(
                           Icons.location_on,
@@ -551,16 +560,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Address",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Address",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(
-                          width: width / 4,
-                        ),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
@@ -574,7 +584,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         Container(
                           width: 130,
                           child: Text(
-                            data["permanentAddress"],
+                            data["resistentialAddress"],
                             style: GoogleFonts.sofiaSans(
                                 fontSize: 16,
                                 color: TextColor.withOpacity(.7),
@@ -642,14 +652,17 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         SizedBox(
                           width: width / 36,
                         ),
-                        Text(
-                          "Pincode",
-                          style: GoogleFonts.sofiaSans(
-                              fontSize: 16,
-                              color: TextColor.withOpacity(.7),
-                              fontWeight: FontWeight.w800),
+                        Container(
+                          width: width / 2.79,
+                          child: Text(
+                            "Pincode",
+                            style: GoogleFonts.sofiaSans(
+                                fontSize: 16,
+                                color: TextColor.withOpacity(.7),
+                                fontWeight: FontWeight.w800),
+                          ),
                         ),
-                        SizedBox(width: width / 4.23),
+
                         Text(
                           ":",
                           style: GoogleFonts.sofiaSans(
