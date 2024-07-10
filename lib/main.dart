@@ -1,4 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:cms_app_v2/AudioPlayer/myaudio.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:cms_app_v2/Views/home_page.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 import 'Views/demo.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'controllers/notification_services.dart';
@@ -244,7 +246,10 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SplashScreen(),
+      home: ChangeNotifierProvider(
+          create: (_)=>MyAudio(),
+          child: SplashScreen()),
+
       localizationsDelegates: [
        GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
